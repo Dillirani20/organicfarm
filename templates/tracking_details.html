@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .tracking-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.tracking {
+    position: relative;
+    padding: 20px;
+}
+
+.progress-bar {
+    background-color: #f0f0f0;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.color-bar {
+    background-color: #4caf50; /* Change color based on progress */
+    height: 100%;
+    width: 0%; /* This will be updated dynamically */
+    transition: width 0.4s ease;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.el {
+    margin-right: 10px;
+}
+
+.bullet-1, .bullet-2, .bullet-3, .bullet-4 {
+    position: relative;
+}
+
+.bullet-1::before, .bullet-2::before, .bullet-3::before, .bullet-4::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    left: -5px; /* Adjust for better alignment */
+}
+
+.bullet-1.active::before,
+.bullet-2.active::before,
+.bullet-3.active::before,
+.bullet-4.active::before {
+    background-color: #4caf50; /* Active bullet color */
+}
+
+</style>
+
+<div class="container mt-5">
+    <h2>Order Tracking Details</h2>
+    <div class="card my-4">
+        <div class="card-body">
+            <h4>Payment Information</h4>
+            <p><strong>Amount:</strong> ₹{{ payment.amount }}</p>
+            <p><strong>Payment Type:</strong> {{ payment.paytype }}</p>
+            <p><strong>Address:</strong> {{ payment.address }}</p>
+            <p><strong>Place:</strong> {{ payment.place }}</p>
+        </div>
+    </div>
+
+    <div class="tracking-wrapper">
+        <h2>Order Tracker</h2>
+        <div class="tracking">
+            <div class="progress-bar">
+                <div class="color-bar"></div>
+            </div>
+            <ul>
+                <li class="bullet-1">
+                    <div class="el"><i class='bx bx-package'></i></div>
+                    <div class="txt">Processing</div>
+                </li>
+                <li class="bullet-2">
+                    <div class="el"><i class='bx bx-truck'></i></div>
+                    <div class="txt">Shipped</div>
+                </li>
+                <li class="bullet-3">
+                    <div class="el"><i class='bx bx-route'></i></div>
+                    <div class="txt">Out for Delivery</div>
+                </li>
+                <li class="bullet-4">
+                    <div class="el"><i class='bx bx-home'></i></div>
+                    <div class="txt">Delivered</div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card my-4">
+            <div class="card-body">
+                <h4>Tracking Information</h4>
+                <p><strong>Tracking Number:</strong> {{ tracking.tracking_number }}</p>
+                <p id="order-status"><strong>Current Status:</strong> {{ tracking.get_status_display }}</p>
+                <p><strong>Estimated Delivery:</strong> {{ tracking.estimated_delivery|default:"Not available" }}</p>
+            </div>
+        </div>
+    </div>
+
+        <div class="mt-4">
+            <a href="{% url 'index' %}" class="btn btn-primary">Back to Home</a>
+        </div>
+    </div>
+
+  
+    <script>
+        // Define the status to percentage mapping
+        const statusMapping = {
+            "Processing": 25,
+            "Shipped": 50,
+            "Out for Delivery": 75,
+            "Delivered": 100
+        };
+
+        // Get the current order status from Django template
+        const currentStatus = "{{ tracking.get_status_display }}"; // This will render as a string
+
+        // Set the width of the color bar based on the current status
+        const progressPercentage = statusMapping[currentStatus] || 0; // Default to 0 if status not found
+        const colorBar = document.querySelector('.color-bar');
+        colorBar.style.width = `${progressPercentage}%`;
+
+        // Activate the corresponding bullet points
+        const bullets = document.querySelectorAll('li');
+        const orderStatusIndex = Object.keys(statusMapping).indexOf(currentStatus);
+
+        for (let i = 0; i <= orderStatusIndex; i++) {
+            bullets[i].classList.add('active');
+        }
+    </script>
+{% endblock %}

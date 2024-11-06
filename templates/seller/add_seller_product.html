@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Modal Search Start -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex align-items-center">
+                <div class="input-group w-75 mx-auto d-flex">
+                    <input type="search" class="form-control p-3" placeholder="keywords"
+                        aria-describedby="search-icon-1">
+                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Search End -->
+
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Seller Dashboard</h1>
+  
+   
+</div>
+<!-- Single Page Header End -->
+
+
+<!-- Cart Page Start -->
+<div class="container-fluid py-5">
+    <div class="row">
+        <div class="col-3 mt-5 p-3 card mb-3">
+            <h4 class="text-primary">Seller Dashboard</h4>
+            <hr>
+
+            <a href="{% url 'seller_dashboard' %}">
+                <h6>Products</h6>
+            </a>
+            <a href="{% url 'add_product' %}">
+                <h6 class="bg-primary p-2 rounded">Add Product</h6>
+            </a>
+            <a href="{% url 'product_list' %}">
+                <h6>Pending Products</h6>
+            </a>
+        </div>
+        <div class="col-9">
+            <div class="card p-3">
+                <form action="{% url 'add_seller_product' %}" method="post" enctype="multipart/form-data">
+                    <h3>Add Product</h3>
+                    <hr>
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label for="" class="form-label">Name</label>
+                            <input type="text" class="form-control" name="name">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="form-label">Price</label>
+                            <input type="number" class="form-control" name="price">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+
+                        <select name="category" id="category" class="form-control" required>
+                            <option value="" disabled selected>Select a Category</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.category_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Image</label>
+                        <input type="file" accept="image/*" class="form-control" name="image">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <main>
+          <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+            <h2>Checkout</h2>
+          </div>
+      
+          <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">Total Amount</span>
+                    <span class="badge bg-primary rounded-pill display-1" >
+                     ₹ {{amount}}</span>
+                  </h4>
+            </div>
+            
+            <div class="col-md-7 col-lg-8">
+              <h4 class="mb-3">Billing address</h4>
+              <form class="needs-validation" method="post" action="{% url 'payment' %}">
+                {% csrf_token %}
+                <div class="row g-3">
+                  <input type="hidden" name="amount" value="{{amount}}">
+      
+                  
+      
+                  <div class="col-12">
+                    <label for="username" class="form-label">Username</label>
+                    <div class="input-group has-validation">
+                      <span class="input-group-text">@</span>
+                      <input type="text" class="form-control" id="username" placeholder="Username" required name="user">
+                    <div class="invalid-feedback">
+                        Your username is required.
+                      </div>
+                    </div>
+                  </div>
+      
+                  <div class="col-12">
+                    <label for="email" class="form-label">Email <span class="text-body-secondary">(Optional)</span></label>
+                    <input type="email" name="email" class="form-control" id="email" value="{{user}}" readonly>
+                    <div class="invalid-feedback">
+                      Please enter a valid email address for shipping updates.
+                    </div>
+                  </div>
+      
+                  <div class="col-12">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" name="add" class="form-control" id="address" placeholder="1234 Main St" required>
+                    <div class="invalid-feedback">
+                      Please enter your shipping address.
+                    </div>
+                  </div>
+      
+                  
+      
+                  <div class="col-md-5">
+                    <label for="country" class="form-label">Place</label>
+                    <select name="place" class="form-select" id="country" required>
+                      <option selected hidden disabled>--select--</option>
+                      <option>chennai</option>
+                      <option>out of chennai</option>
+                    </select>
+                    <div class="invalid-feedback">
+                      Please select a valid country.
+                    </div>
+                  </div>
+      
+                  
+      
+                  
+                </div>
+      
+               
+      
+                
+      
+                
+      
+                <hr class="my-4">
+      
+                <h4 class="mb-3">Payment</h4>
+      
+                <div class="my-3">
+                  <div class="my-3">
+                    <div class="form-check">
+                      <input id="credit" name="paytype" type="radio" value="Credit card" class="form-check-input" required>
+                      <label class="form-check-label" for="credit">Credit card</label>
+                    </div>
+                    <div class="form-check">
+                      <input id="debit" name="paytype" type="radio" value="Debit card" class="form-check-input" required>
+                      <label class="form-check-label" for="debit">Debit card</label>
+                    </div>
+                    <div class="form-check">
+                      <input id="upi" name="paytype" type="radio" value="UPI" class="form-check-input" required>
+                      <label class="form-check-label" for="upi">UPI</label>
+                    </div>
+                    <div class="form-check">
+                      <input id="netbanking" name="paytype" type="radio" value="Net Banking" class="form-check-input" required>
+                      <label class="form-check-label" for="netbanking">Net Banking</label>
+                    </div>
+                    <div class="form-check">
+                      <input id="cod" name="paytype" type="radio" value="Cash On Delivery" class="form-check-input" required>
+                      <label class="form-check-label" for="cod">Cash On Delivery</label>
+                    </div>
+                  </div>
+                  
+                  <!-- Forms for each payment type -->
+                  <div id="credit-form" class="payment-form" style="display: none;">
+                    <h4>Credit Card Details</h4>
+                    <div class="row mb-3">
+                      <div class="col-6">
+                        <input type="text" placeholder="Credit Card Number" class="form-control" />
+                      </div>
+                      <div class="col-6">
+                      <input type="text" placeholder="Expiration Date" class="form-control" />
+                      </div>
+
+                    </div>
+                    <div class="mb-3">
+                      <input type="text" placeholder="CVV" class="form-control" />
+                    </div>
+                  
+                   
+                  </div>
+                  
+                  <div id="debit-form" class="payment-form" style="display: none;">
+                    <h4>Debit Card Details</h4>
+                    <div class="row mb-3">
+                      <div class="col-6">
+                        <input type="text" placeholder="Debit Card Number" class="form-control" />
+                      </div>
+                      <div class="col-6">
+                      <input type="text" placeholder="Expiration Date" class="form-control" />
+                      </div>
+
+                    </div>
+                    <div class="mb-3">
+                      <input type="text" placeholder="CVV" class="form-control" />
+                    </div>
+                  </div>
+                  
+                  <div id="upi-form" class="payment-form" style="display: none;">
+                    <h4>UPI Payment Details</h4>
+                    <input type="text" placeholder="UPI ID" class="form-control" />
+                  </div>
+                  
+                  <div id="netbanking-form" class="payment-form" style="display: none;">
+                    <h4>Net Banking Details</h4>
+                    <input type="text" placeholder="Bank Name" class="form-control" />
+                    <input type="text" placeholder="Account Number" class="form-control" />
+                  </div>
+                  
+                  <div id="cod-form" class="payment-form" style="display: none;">
+                    <h4>Cash On Delivery</h4>
+                    <p>No details required. You will pay on delivery.</p>
+                  </div>
+                </div>
+                <hr class="my-4">
+      
+                <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+              </form>
+            </div>
+          </div>
+        </main>
+      
+     
+      </div>
+      <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+(() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+      </script>
+       <!-- JavaScript to toggle forms -->
+       <script>
+        const paymentForms = {
+          'credit': document.getElementById('credit-form'),
+          'debit': document.getElementById('debit-form'),
+          'upi': document.getElementById('upi-form'),
+          'netbanking': document.getElementById('netbanking-form'),
+          'cod': document.getElementById('cod-form'),
+        };
+      
+        document.querySelectorAll('input[name="paytype"]').forEach(radio => {
+          radio.addEventListener('change', function() {
+            // Hide all forms
+            Object.values(paymentForms).forEach(form => form.style.display = 'none');
+      
+            // Show the selected form
+            if (this.checked) {
+              paymentForms[this.id].style.display = 'block';
+            }
+          });
+        });
+      </script>
+      
+ {% endblock %}

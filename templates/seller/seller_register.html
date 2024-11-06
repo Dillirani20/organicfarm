@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  body{
+    background-image: url('../static/img/hero-img.jpg');
+  }
+  .box{
+    margin-top: 200px;
+  }
+
+</style>
+
+<div class="container  box">
+    <div class="m-5 col-6 mx-auto">
+        <form action="{% url 'seller_register' %}" method="post">
+          {% csrf_token %}
+          <h1 class="text-primary">Seller</h1>
+            <h3>Sign-up</h3>
+            <hr>
+            {% if messages %}
+                <div class="alert alert-info" role="alert">
+                  {% for message in messages %}
+                  {{ message }}
+                  {% endfor %}
+                </div>
+            {% endif %}
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email address</label>
+              <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Password</label>
+              <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>    
+    </div>
+   
+</div>
+
+
+{% endblock %}
