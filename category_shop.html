@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Shop</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active text-white">Shop</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+
+<!-- Fruits Shop Start-->
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">Fresh fruits shop</h1>
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <div class="row g-4">
+                    <div class="col-xl-3">
+                        <div class="input-group w-100 mx-auto d-flex">
+                            <input type="search" class="form-control p-3" placeholder="keywords"
+                                aria-describedby="search-icon-1">
+                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-6"></div>
+
+                  
+                                    <div class="container m-5">
+                                        <h4>Categories</h4>
+                                        <div class="row">
+                                            {% for i in categories %}
+                                            <div class="col-2 my-3">
+                                                <img src="{{i.category_image.url}}" alt="" class="rounded-3 shadow-lg" width="100px" height="100px"> <br>
+                                                <a href="{% url '' %}?category={{ i.id }}" class="text-center">{{i.category_name}}</a>
+                                            </div>
+                                            {% endfor %}
+
+                                        </div>
+
+
+             
+<!-- product details -->
+<div class="tab-content">
+<div id="tab-1" class="tab-pane fade show p-0 active">
+    <div class="row g-4">
+        <div class="col-lg-12">
+            <div class="row g-4">
+                {% for i in products %}
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <a href="{% url 'product_detail' i.id  %}">
+                        <div class="rounded position-relative fruite-item">
+                            <div class="fruite-img">
+                                <img src="{{i.image.url}}" class="img-fluid w-100 rounded-top" alt=""
+                                    style="height: 261px;">
+                            </div>
+                            {% if i.category.category_name == "Vegetables" %}
+
+                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
+                                style="top: 10px; left: 10px;">{{i.category}}</div>
+                            {% else %}
+                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                style="top: 10px; left: 10px;">{{i.category}}</div>
+
+                            {% endif %}
+
+                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                <h4>{{ i.name}}</h4>
+                                <p>{{ i.description | truncatechars:200 }}</p>
+                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                    <p class="text-dark fs-5 fw-bold mb-0">₹{{i.price}}</p>
+                                    <a href="{% url 'add_to_cart' i.id %}"
+                                        class="btn border border-secondary rounded-pill px-3 text-primary"><i
+                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to
+                                        cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                                  
+                                    
+            <!--  end product details -->
+
+                            <div class="col-12">
+                                <div class="pagination d-flex justify-content-center mt-5">
+                                    <a href="#" class="rounded">&laquo;</a>
+                                    <a href="#" class="active rounded">1</a>
+                                    <a href="#" class="rounded">2</a>
+                                    <a href="#" class="rounded">3</a>
+                                    <a href="#" class="rounded">4</a>
+                                    <a href="#" class="rounded">5</a>
+                                    <a href="#" class="rounded">6</a>
+                                    <a href="#" class="rounded">&raquo;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fruits Shop End-->
+
+
+
+
+{% endblock %}

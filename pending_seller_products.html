@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrganicFarm</title>
+    <!-- Bootstrap CSS for styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Custom styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        header, footer {
+            background-color: #343a40;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        footer {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
+        .container {
+            min-height: 80vh;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            border-radius: 10px 10px 0 0;
+        }
+        .footer-item {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Organic Farm</h1>
+        <nav>
+            <a href="/" class="text-white">Home</a> | 
+            <a href="/shop_page" class="text-white">Products</a> |
+            <a href="{% url 'logout' %}" class="text-white">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Main Content Start -->
+    <div class="container py-5">
+        <h2>Pending Seller Products</h2>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Seller</th>
+                    <th scope="col">Actions</th>                        
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for product in pending_products %}
+                    <tr>
+                        <td>
+                            <img src="{{ product.image.url }}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" alt="">
+                        </td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>{{ product.description | truncatechars:100 }}</td>
+                        <td>{{ product.user.username }}</td>
+                        <td>
+                            <a href="{% url 'approve_seller_product' product.id %}" class="btn btn-success">Approve</a>
+                            <a href="{% url 'reject_seller_product' product.id %}" class="btn btn-danger">Reject</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No pending product requests at the moment.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Main Content End -->
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 OrganicFarm. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS (Optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
